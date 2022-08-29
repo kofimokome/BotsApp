@@ -29,7 +29,7 @@ import {MessageType} from './sidekick/message-type'
 const express = require("express");
 
 const app = express();
-const port = 7000;
+const port = process.env.PORT || 7000
 
 app.get('/', (req, res) => {
     res.send('Up and running');
