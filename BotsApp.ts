@@ -1,35 +1,53 @@
-import { Boom } from '@hapi/boom'
-import P, { Logger } from 'pino'
-import makeWASocket, { MessageRetryMap, DisconnectReason, fetchLatestBaileysVersion, makeInMemoryStore, WASocket, proto, Contact } from '@adiwajshing/baileys'
+import {Boom} from '@hapi/boom'
+import P, {Logger} from 'pino'
+import makeWASocket, {
+    Contact,
+    DisconnectReason,
+    fetchLatestBaileysVersion,
+    makeInMemoryStore,
+    MessageRetryMap,
+    proto,
+    WASocket
+} from '@adiwajshing/baileys'
 // @ts-ignore
-import { useRemoteFileAuthState } from './core/dbAuth.js'
+import {useRemoteFileAuthState} from './core/dbAuth.js'
 import fs from 'fs'
-import { join } from 'path'
+import {join} from 'path'
 import config from './config'
-import { banner } from './lib/banner'
+import {banner} from './lib/banner'
 import chalk from 'chalk'
-import Greetings from './database/greeting'
 import STRINGS from "./lib/db"
 import Blacklist from './database/blacklist'
 import clearance from './core/clearance'
-import { start } from 'repl'
-import format from 'string-format';
 import resolve from './core/helper'
-import { Sequelize } from 'sequelize/types'
+import {Sequelize} from 'sequelize/types'
 import Command from './sidekick/command'
 import BotsApp from './sidekick/sidekick'
 import Client from './sidekick/client'
-import { MessageType } from './sidekick/message-type'
+import {MessageType} from './sidekick/message-type'
+// import * as express from 'express'
+const express = require("express");
+
+const app = express();
+const port = 7000;
+
+app.get('/', (req, res) => {
+    res.send('Up and running');
+    // res.sendFile(__dirname + '/index.html');
+});
+app.listen(port, () => {
+    console.log(chalk.greenBright(`[INFO] Example app listening on port ${port}`));
+})
 
 const sequelize: Sequelize = config.DATABASE;
 const GENERAL: any = STRINGS.general;
 const msgRetryCounterMap: MessageRetryMap = {};
-const logger: Logger = P({ timestamp: () => `,"time":"${new Date().toJSON()}"` }).child({})
+const logger: Logger = P({timestamp: () => `,"time":"${new Date().toJSON()}"`}).child({})
 logger.level = 'fatal'
 
 // the store maintains the data of the WA connection in memory
 // can be written out to a file & read from it
-const store = makeInMemoryStore({ logger })
+const store = makeInMemoryStore({logger})
 store?.readFromFile('./session.data.json')
 // save every 10s
 setInterval(() => {
@@ -76,8 +94,8 @@ setInterval(() => {
 
     const startSock = async () => {
         // @ts-ignore
-        const { state, saveCreds } = await useRemoteFileAuthState();
-        const { version, isLatest } = await fetchLatestBaileysVersion();
+        const {state, saveCreds} = await useRemoteFileAuthState();
+        const {version, isLatest} = await fetchLatestBaileysVersion();
         const sock: WASocket = makeWASocket({
             version,
             logger,
@@ -106,7 +124,7 @@ setInterval(() => {
             async (events) => {
                 if (events['connection.update']) {
                     const update = events['connection.update'];
-                    const { connection, lastDisconnect } = update;
+                    const {connection, lastDisconnect} = update;
                     if (connection === 'close') {
                         if ((lastDisconnect.error as Boom)?.output?.statusCode !== DisconnectReason.loggedOut) {
                             startSock()
@@ -162,7 +180,7 @@ setInterval(() => {
                     if (upsert.type !== 'notify') {
                         return;
                     }
-                    for(const msg of upsert.messages){
+                    for (const msg of upsert.messages) {
                         let chat: proto.IWebMessageInfo = msg;
                         let BotsApp: BotsApp = await resolve(chat, sock);
                         // console.log(BotsApp);
@@ -209,4 +227,5 @@ setInterval(() => {
     }
 
     startSock();
-})().catch(err => console.log('[MAINERROR] : %s', chalk.redBright.bold(err)));;
+})().catch(err => console.log('[MAINERROR] : %s', chalk.redBright.bold(err)));
+;
