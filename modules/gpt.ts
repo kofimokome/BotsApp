@@ -18,11 +18,8 @@ const sendMessageToChatGPT = async (api: BingChat, message: string, client: Clie
         gpt.TYPING,
         MessageType.text
     );
-    let chatId = ''; // BotsApp.sender
-    if (BotsApp.isGroup) {
-    } else {
-        let chatId = BotsApp.chatId;
-    }
+    const chatId = BotsApp.chatId;  // BotsApp.sender
+
     if (Object.hasOwn(contexts, chatId)) {
         try {
             const res = await api.sendMessage(message, {
