@@ -1,6 +1,6 @@
 import { Boom } from '@hapi/boom'
 import P, { Logger } from 'pino'
-import makeWASocket, { MessageRetryMap, DisconnectReason, fetchLatestBaileysVersion, makeInMemoryStore, WASocket, proto, Contact } from '@adiwajshing/baileys'
+import makeWASocket,{ DisconnectReason, fetchLatestBaileysVersion, makeInMemoryStore, WASocket, proto, Contact } from '@whiskeysockets/baileys'
 // @ts-ignore
 import useRemoteFileAuthState from './core/dbAuth.cjs';
 import fs from 'fs'
@@ -29,7 +29,7 @@ const __dirname = dirname(__filename);
 
 const sequelize: Sequelize = config.DATABASE;
 const GENERAL: any = STRINGS.general;
-const msgRetryCounterMap: MessageRetryMap = {};
+const msgRetryCounterMap: any = {};
 const logger: Logger = P({ timestamp: () => `,"time":"${new Date().toJSON()}"` }).child({})
 logger.level = 'fatal'
 
@@ -95,7 +95,7 @@ setInterval(() => {
             // implement to handle retries
             getMessage: async key => {
                 if (store) {
-                    const msg = await store.loadMessage(key.remoteJid!, key.id!, undefined)
+                    const msg = await store.loadMessage(key.remoteJid!, key.id!)
                     return msg?.message || undefined
                 }
 

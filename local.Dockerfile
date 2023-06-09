@@ -13,6 +13,6 @@ WORKDIR /BotsApp
 RUN npm install
 
 
-# RUN cp -r /root/Baileys/lib /BotsApp/node_modules/@adiwajshing/baileys/
+# RUN cp -r /root/Baileys/lib /BotsApp/node_modules/@whiskeysockets/baileys/
 
 CMD [ "npm", "start"]
