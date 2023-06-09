@@ -11,7 +11,7 @@
   "author": "Prince Mendiratta",
   "license": "ISC",
   "dependencies": {
-    "@whiskeysockets/keyed-db": "^0.2.4",
+    "@adiwajshing/keyed-db": "^0.2.4",
     "@hapi/boom": "^9.1.4",
     "@hapi/hoek": "9.3.0",
     "@nuintun/qrcode": "^3.0.1",
