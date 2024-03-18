@@ -1,0 +1,18 @@
+version: '3.3'
+
+services:
+
+  botsapp:
+    container_name: botsapp
+    build:
+      context: .
+      dockerfile: local.Dockerfile
+    volumes:
+      - '.:/BotsApp'
+      - '/BotsApp/node_modules'
+    restart: 'always'
+    #    ports:
+    #      - '8031:8890'
+    #      - '3001:8891'
+    environment:
+      - NODE_ENV=production
