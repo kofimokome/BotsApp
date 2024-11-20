@@ -13,7 +13,7 @@
         "@adiwajshing/keyed-db": "^0.2.4",
         "@nuintun/qrcode": "^3.0.1",
         "@vitalets/google-translate-api": "^7.0.0",
-        "@whiskeysockets/baileys": "^6.7.5",
+        "@whiskeysockets/baileys": "^6.7.9",
         "axios": "^0.27.2",
         "chalk": "^4.1.1",
         "cheerio": "^1.0.0-rc.11",
