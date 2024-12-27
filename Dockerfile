@@ -1,4 +1,4 @@
-FROM princemendiratta/botsapp:latest
+FROM node:20.12
 
 WORKDIR /
 
@@ -15,6 +15,7 @@ RUN #git fetch origin multi-device
 RUN #git reset --hard origin/multi-device
 
 RUN yarn
+RUN yarn add sqlite3
 
 # RUN cp -r /root/Baileys/lib /BotsApp/node_modules/@whiskeysockets/baileys/
 
